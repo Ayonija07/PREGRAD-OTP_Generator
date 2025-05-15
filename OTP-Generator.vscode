@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h> // For sleep()
+
+#define OTP_VALIDITY 30
+
+char* generateOTP() {
+    static char otp[7];
+    int num = rand() % 900000 + 100000; // 6-digit OTP
+    sprintf(otp, "%06d", num);
+    return otp;
+}
+
+int main() {
+    srand(time(0));
+    char* otp = generateOTP();
+    printf("Generated OTP: %s\n", otp);
+    printf("OTP is valid for %d seconds...\n", OTP_VALIDITY);
+
+    for (int i = OTP_VALIDITY; i > 0; i--) {
+        printf("Time left: %d seconds\r", i);
+        fflush(stdout);
+        sleep(1);
+    }
+
+    printf("\nOTP expired!\n");
+    return 0;
+}
